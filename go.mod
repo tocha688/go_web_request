@@ -1,4 +1,4 @@
-module github.com/tocha688/go_web_reuqest
+module github.com/tocha688/go_web_request
 
 go 1.23.0
 
