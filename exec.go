@@ -1,7 +1,5 @@
 package webRequest
 
-import "net/url"
-
 var DefaultHeaderOrders = []string{
 	"host",
 	"connection",
@@ -47,15 +45,6 @@ func (p *WebRequest) Execute(target string, method string) (*WebResponse, error)
 			return resp, err
 		}
 	}
-	p.Url = target
-	p.Method = method
-	ul, err := url.Parse(target)
-	if err != nil {
-		return nil, err
-	}
-	p.targetUrl = ul
-	//判断是否为原始请求
-	//默认使用gq客户端
 	return p.execute_requests(target, method)
 }
 

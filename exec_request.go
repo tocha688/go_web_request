@@ -3,6 +3,7 @@ package webRequest
 import (
 	"crypto/tls"
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/gospider007/ja3"
@@ -54,9 +55,19 @@ func ja3_repair(p *WebRequest, ja3s ja3.Ja3Spec) ja3.Ja3Spec {
 }
 
 func (p *WebRequest) execute_requests(target string, method string) (res *WebResponse, err error) {
+	p.Url = target
+	p.Method = method
+	ul, err := url.Parse(target)
+	if err != nil {
+		return nil, err
+	}
+	p.targetUrl = ul
+	///
 	ops := requests.RequestOption{
 		TlsConfig:  &tls.Config{},
 		UtlsConfig: &utls.Config{},
+		//默认不重定向，因为要合并cookie
+		MaxRedirect: -1,
 	}
 	//初始化指纹
 	if p.client.SpecJa3 != "" {
@@ -89,9 +100,9 @@ func (p *WebRequest) execute_requests(target string, method string) (res *WebRes
 	} else if p.client.Proxy != "" {
 		ops.Proxy = p.client.Proxy
 	}
-	if p.IsNotRedirect {
-		ops.MaxRedirect = -1
-	}
+	// if p.IsNotRedirect {
+	// 	ops.MaxRedirect = -1
+	// }
 	if p.client.Http1Force || p.Http1Force {
 		ops.ForceHttp1 = true
 	}
@@ -110,7 +121,7 @@ func (p *WebRequest) execute_requests(target string, method string) (res *WebRes
 	//请求头
 	hds := p.GetHttpHeader()
 	//cookie
-	if hds["cookie"] == nil {
+	if hds.Get("cookie") == "" {
 		cookies := p.GetCookies()
 		if len(cookies) > 0 {
 			hds.Set("cookie", utils.CookieToString(cookies))
@@ -137,6 +148,10 @@ func (p *WebRequest) execute_requests(target string, method string) (res *WebRes
 		p.client.CookieJar.SetCookies(resp.Url(), cookies)
 	}
 	res.ResponseBytes = resp.Content()
+	//判断是否有重定向
+	if !p.IsNotRedirect && res.GetHeader("location") != "" {
+		return p.execute_requests(res.GetHeader("location"), "GET")
+	}
 
 	p.after_fn(res)
 
