@@ -10,7 +10,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/tocha688/go_web_reuqest/utils"
+	"github.com/tocha688/go_web_request/utils"
 )
 
 type WebRequest struct {

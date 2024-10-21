@@ -9,7 +9,7 @@ import (
 	"github.com/gospider007/ja3"
 	"github.com/gospider007/requests"
 	utls "github.com/refraction-networking/utls"
-	"github.com/tocha688/go_web_reuqest/utils"
+	"github.com/tocha688/go_web_request/utils"
 )
 
 func ja3_random(ja3s string) string {

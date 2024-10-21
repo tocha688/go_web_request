@@ -6,7 +6,7 @@ import (
 
 	"github.com/samber/lo"
 	"github.com/tocha688/go-cookiejar"
-	"github.com/tocha688/go_web_reuqest/utils"
+	"github.com/tocha688/go_web_request/utils"
 )
 
 type WebClient struct {
