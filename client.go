@@ -1,6 +1,7 @@
 package webRequest
 
 import (
+	"log"
 	"net/http"
 	"net/url"
 
@@ -186,6 +187,12 @@ func (p *WebClient) SetSkipTlsVerify(b bool) *WebClient {
 	p.init()
 	p.SkipTlsVerify = b
 	return p
+}
+func (p *WebClient) Println(v ...any) {
+	if !p.IsDebug {
+		return
+	}
+	log.Println(v...)
 }
 
 // ----------------
