@@ -18,6 +18,8 @@ var DefaultHeaderOrders = []string{
 	"sec-ch-ua-platform",
 	"sec-ch-ua-platform-version",
 	"sec-ch-ua-model",
+	"origin",
+	"content-type",
 	"upgrade-insecure-requests",
 	"user-agent",
 	"accept",
@@ -29,6 +31,7 @@ var DefaultHeaderOrders = []string{
 	"accept-encoding",
 	"accept-language",
 	"cookie",
+	"priority",
 }
 
 func (p *WebRequest) after_fn(res *WebResponse) {
