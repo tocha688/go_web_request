@@ -119,7 +119,7 @@ func (p *WebRequest) execute_requests(target string, method string) (res *WebRes
 	// ops.TlsConfig.RootCAs = x509pool
 	// ops.UtlsConfig.RootCAs = x509pool
 	//请求头
-	hds := p.GetHttpHeader()
+	hds := p.loadRequestHeader(target)
 	//cookie
 	if hds.Get("cookie") == "" {
 		cookies := p.GetCookies()
@@ -130,7 +130,7 @@ func (p *WebRequest) execute_requests(target string, method string) (res *WebRes
 	ops.Headers = hds
 	//重写请求头
 	ops.OrderHeaders = DefaultHeaderOrders
-	if p.Body != "" {
+	if p.Body != "" && p.isLoadBody(target) {
 		ops.Body = p.Body
 	}
 	//开始请求

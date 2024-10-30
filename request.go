@@ -170,3 +170,16 @@ func (p *WebRequest) IsChrome() bool {
 func (p *WebRequest) IsFirefox() bool {
 	return p.UaIs("Firefox")
 }
+func (p *WebRequest) isLoadBody(target string) bool {
+	return target == "POST" || target == "PUT" || target == "PATCH"
+}
+func (p *WebRequest) loadRequestHeader(target string) http.Header {
+	headers := http.Header{}
+	for key, co := range p.GetHeaders() {
+		if key == "content-type" && !p.isLoadBody(target) {
+			continue
+		}
+		headers.Set(key, co)
+	}
+	return headers
+}
