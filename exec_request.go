@@ -152,11 +152,16 @@ func (p *WebRequest) execute_requests(target string, method string) (res *WebRes
 	//判断是否有重定向
 	loction := res.GetHeader("location")
 	if !p.IsNotRedirect && loction != "" {
+		//打印
 		p.client.Println("Redirect: " + res.Url().String() + " --> " + loction)
-		return p.execute_requests(loction, "GET")
+		p.after_fn(res)
+		//复制
+		p2 := p.Clone()
+		p2.SetHeader("referer", target)
+		return p2.execute_requests(loction, "GET")
+	} else {
+		p.after_fn(res)
 	}
-
-	p.after_fn(res)
 
 	return res, nil
 }
