@@ -162,6 +162,7 @@ func (p *WebClient) R() *WebRequest {
 		Cookies:       []*http.Cookie{},
 		IsNotRedirect: false,
 		Timeout:       30,
+		client:        p,
 	}
 }
 
