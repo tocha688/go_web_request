@@ -136,8 +136,9 @@ func (p *WebRequest) execute_requests(target string, method string) (res *WebRes
 	//开始请求
 	resp, err := requests.Request(nil, method, target, ops)
 	res = &WebResponse{
-		Request:         p,
-		request_headers: http.Header(hds),
+		Request:             p,
+		request_headers:     http.Header(hds),
+		RawRequestsResponse: resp,
 	}
 	if err != nil {
 		return res, err
