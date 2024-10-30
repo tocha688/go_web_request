@@ -99,6 +99,13 @@ func (h *WebHeader) ToMap() map[string]string {
 	}
 	return result
 }
+func (h *WebHeader) Clone() *WebHeader {
+	result := &WebHeader{}
+	for _, hd := range h.headers {
+		result.AddHead(hd)
+	}
+	return result
+}
 
 // 获取排序
 func (h *WebHeader) GetOrder() []string {
