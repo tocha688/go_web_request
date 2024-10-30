@@ -158,6 +158,9 @@ func (p *WebRequest) execute_requests(target string, method string) (res *WebRes
 		//复制
 		p2 := p.Clone()
 		p2.SetHeader("referer", target)
+		//删除数据
+		p2.Body = ""
+		p2.SetHeader("content-type", "")
 		return p2.execute_requests(loction, "GET")
 	} else {
 		p.after_fn(res)

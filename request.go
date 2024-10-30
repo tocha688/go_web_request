@@ -179,6 +179,9 @@ func (p *WebRequest) loadRequestHeader(target string) http.Header {
 		if key == "content-type" && !p.isLoadBody(target) {
 			continue
 		}
+		if co == "" {
+			continue
+		}
 		headers.Set(key, co)
 	}
 	return headers
