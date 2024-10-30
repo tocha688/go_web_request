@@ -2,6 +2,7 @@ package webRequest
 
 import (
 	"crypto/tls"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -150,8 +151,12 @@ func (p *WebRequest) execute_requests(target string, method string) (res *WebRes
 	}
 	res.ResponseBytes = resp.Content()
 	//判断是否有重定向
-	if !p.IsNotRedirect && res.GetHeader("location") != "" {
-		return p.execute_requests(res.GetHeader("location"), "GET")
+	loction := res.GetHeader("location")
+	if !p.IsNotRedirect && loction != "" {
+		if p.client.IsDebug {
+			log.Println("Redirect: " + res.Url().String() + " --> " + loction)
+		}
+		return p.execute_requests(loction, "GET")
 	}
 
 	p.after_fn(res)
